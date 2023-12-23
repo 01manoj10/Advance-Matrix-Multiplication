@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Multiplication Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        form {
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Matrix Multiplication Calculator</h2>
+    <form id="matrixForm">
+        <label for="rowsA">Rows of Matrix A:</label>
+        <input type="number" id="rowsA" name="rowsA" required>
+
+        <label for="colsA">Columns of Matrix A:</label>
+        <input type="number" id="colsA" name="colsA" required>
+
+        <label for="rowsB">Rows of Matrix B:</label>
+        <input type="number" id="rowsB" name="rowsB" required>
+
+        <label for="colsB">Columns of Matrix B:</label>
+        <input type="number" id="colsB" name="colsB" required>
+
+        <button type="button" onclick="multiplyMatrices()">Calculate</button>
+    </form>
+
+    <div id="resultContainer"></div>
+
+    <script>
+        function multiplyMatrices() {
+            // Geting  matrix dimensions
+            const rowsA = document.getElementById('rowsA').value;
+            const colsA = document.getElementById('colsA').value;
+            const rowsB = document.getElementById('rowsB').value;
+            const colsB = document.getElementById('colsB').value;
+
+            // Validating dimensions
+            if (colsA !== rowsB) {
+                alert("Number of columns in Matrix A must be equal to the number of rows in Matrix B.");
+                return;
+            }
+
+            // Displaying result container
+            document.getElementById('resultContainer').innerHTML = '<h3>Result:</h3>';
+
+            //sending this data to the backend for calculation
+            const data = {
+                rowsA: parseInt(rowsA),
+                colsA: parseInt(colsA),
+                rowsB: parseInt(rowsB),
+                colsB: parseInt(colsB)
+            };
+
+            displayMatrices(data);
+        }
+
+        function displayMatrices(data) {
+            const resultContainer = document.getElementById('resultContainer');
+
+            // Displaying matrices
+            resultContainer.innerHTML += `<h4>Matrix A (${data.rowsA}x${data.colsA}):</h4>`;
+            resultContainer.innerHTML += generateMatrixInput(data.rowsA, data.colsA, 'matrixA');
+
+            resultContainer.innerHTML += `<h4>Matrix B (${data.rowsB}x${data.colsB}):</h4>`;
+            resultContainer.innerHTML += generateMatrixInput(data.rowsB, data.colsB, 'matrixB');
+        }
+
+        function generateMatrixInput(rows, cols, matrixName) {
+            let matrixInput = '<table>';
+            for (let i = 0; i < rows; i++) {
+                matrixInput += '<tr>';
+                for (let j = 0; j < cols; j++) {
+                    matrixInput += `<td><input type="number" id="${matrixName}[${i}][${j}]" name="${matrixName}[${i}][${j}]" required></td>`;
+                }
+                matrixInput += '</tr>';
+            }
+            matrixInput += '</table>';
+            return matrixInput;
+        }
+    </script>
+</body>
+</html>
